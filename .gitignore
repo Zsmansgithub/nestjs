@@ -1,6 +1,9 @@
 # compiled output
 /dist
 /node_modules
+/demo/node_modules
+/demo1/node_modules
+/vue-project/node_modules
 
 # Logs
 logs
