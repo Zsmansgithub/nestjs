@@ -7,6 +7,7 @@ import { ApidemoModule } from './apidemo/apidemo.module';
 import { ListModule } from './list/list.module';
 import { BasicModule } from './basic/basic.module';
 import { ConfigModule } from './config/config.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { ConfigModule } from './config/config.module';
     ApidemoModule,
     ListModule, // 模块需导出后（exports）才能在别处引用使用 默认只能在模块内部(controller)使用
     BasicModule, // 全局模块注册
-    ConfigModule.aaa({ path: 'aaa' }), // 调用ConfigModule类静态方法 传入参数动态返回module
+    ConfigModule.aaa({ path: 'aaa' }), UploadModule, // 调用ConfigModule类静态方法 传入参数动态返回module
   ], // BasicModule 全局模块
   controllers: [AppController],
   // providers: [AppService],

@@ -13,9 +13,9 @@
     <el-form-item>
       <el-button type="primary" @click="onSubmit">提交</el-button>
     </el-form-item>
+    <el-button type="primary" @click="downloadStream">下载</el-button>
   </el-form>
 </template>
-
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
@@ -41,6 +41,19 @@ const onSubmit = () => {
     .then(res => res.json())
     .then(res => {
       console.log(res);
+    });
+};
+
+const downloadStream = () => {
+  fetch('api/upload/stream')
+    .then(res => res.arrayBuffer())
+    .then(res => {
+      const blob = new Blob([res]);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'zs.zip';
+      a.click();
     });
 };
 </script>

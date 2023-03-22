@@ -1,10 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { VersioningType } from '@nestjs/common';
 import { AppModule } from './app.module';
-import * as session from 'express-session';
-import * as cors from 'cors';
+import * as session from 'express-session'; // session
+import * as cors from 'cors'; // 跨域
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 import { Request, Response, NextFunction } from 'express';
+import { join } from 'path';
 
 // 全局拦截（中间件）
 function middlewareAll(req: Request, res: Response, next: NextFunction) {
@@ -14,13 +16,16 @@ function middlewareAll(req: Request, res: Response, next: NextFunction) {
   } else {
     res.send({
       code: 403,
-      message: '拦截掉',
+      message: '拦截掉'
     });
   }
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.useStaticAssets(join(__dirname, 'image'), {
+    prefix: '/images'
+  });
   app.use(cors());
   app.use(
     session({
@@ -28,15 +33,15 @@ async function bootstrap() {
       name: 'token1', // 生成客户端cookie名字默认connect sid
       cookie: {
         httpOnly: true,
-        maxAge: 30000,
+        maxAge: 30000
       }, // 设置返回到前端key属性，默认值为{path: '/', httpOnly: true,secure: false, maxAge: null}
-      rolling: true, // 每次请求强行设置cookie, 重置cookie过期时间（默认false）
-    }),
+      rolling: true // 每次请求强行设置cookie, 重置cookie过期时间（默认false）
+    })
   );
 
-  app.use(middlewareAll);
+  // app.use(middlewareAll); // 拦截
   app.enableVersioning({
-    type: VersioningType.URI,
+    type: VersioningType.URI
   });
   await app.listen(8000);
 }
