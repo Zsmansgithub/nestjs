@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { VersioningType } from '@nestjs/common';
+import { VersioningType, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import * as session from 'express-session'; // session
 import * as cors from 'cors'; // 跨域
@@ -39,7 +39,8 @@ async function bootstrap() {
       rolling: true, // 每次请求强行设置cookie, 重置cookie过期时间（默认false）
     }),
   );
-
+  // 管道验证（nestjs 内置）
+  app.useGlobalPipes(new ValidationPipe())
   // app.use(middlewareAll); // 拦截
   app.useGlobalInterceptors(new response());
   app.enableVersioning({

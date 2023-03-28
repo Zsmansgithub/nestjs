@@ -7,11 +7,12 @@ import {
   Param,
   Delete,
   Inject,
+  ParseIntPipe,
+  ParseUUIDPipe
 } from '@nestjs/common';
 import { ListService } from './list.service';
 import { CreateListDto } from './dto/create-list.dto';
 import { UpdateListDto } from './dto/update-list.dto';
-
 @Controller('list')
 export class ListController {
   constructor(
@@ -31,7 +32,10 @@ export class ListController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  // 管道转换可用作数据转换或验证等
+  // findOne(@Param('id', ParseUUIDPipe) id: number) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    console.log(typeof id)
     return this.listService.findOne(+id);
   }
 
