@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { VersioningType, ValidationPipe } from '@nestjs/common';
+import { Reflector } from "@nestjs/core"
 import { AppModule } from './app.module';
 import * as session from 'express-session'; // session
 import * as cors from 'cors'; // 跨域
@@ -7,7 +8,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 import { Request, Response, NextFunction } from 'express';
 import { join } from 'path';
-import { response } from './common/response';
+import { response } from './common/response'; // 
+import { RoleGuard } from './guard/role.guard'; // 守卫全局引入
 
 // 全局拦截（中间件）
 function middlewareAll(req: Request, res: Response, next: NextFunction) {
@@ -39,6 +41,8 @@ async function bootstrap() {
       rolling: true, // 每次请求强行设置cookie, 重置cookie过期时间（默认false）
     }),
   );
+  // 全局守卫
+  app.useGlobalGuards(new RoleGuard(new Reflector()))
   // 管道验证（nestjs 内置）
   app.useGlobalPipes(new ValidationPipe())
   // app.use(middlewareAll); // 拦截
