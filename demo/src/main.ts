@@ -10,6 +10,8 @@ import { Request, Response, NextFunction } from 'express';
 import { join } from 'path';
 import { response } from './common/response'; // 
 import { RoleGuard } from './guard/role.guard'; // 守卫全局引入
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+
 
 // 全局拦截（中间件）
 function middlewareAll(req: Request, res: Response, next: NextFunction) {
@@ -24,8 +26,15 @@ function middlewareAll(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  // token title 描述 版本
+  const options = new DocumentBuilder().addBearerAuth().setTitle('swagger-demo').setDescription('swagger-document-demo').setVersion('1.0.0').build()
+
+  const document = SwaggerModule.createDocument(app, options)
+  SwaggerModule.setup('/api-nestjs', app, document)
+
   app.useStaticAssets(join(__dirname, 'image'), {
     prefix: '/images',
   });
@@ -50,6 +59,6 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
-  await app.listen(8000);
+  await app.listen(9527);
 }
 bootstrap();
