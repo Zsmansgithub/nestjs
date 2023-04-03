@@ -29,6 +29,11 @@
     <el-table-column prop="createTime" label="创建时间" />
     <el-table-column prop="warehouse" label="仓库" />
     <el-table-column prop="menchart" label="商家" />
+    <el-table-column label="tag">
+      <template #="prop">
+        <el-button @click="addTag(prop.row.spuName)">tag</el-button>
+      </template>
+    </el-table-column>
   </el-table>
 
   <el-dialog v-model="outerVisible">
@@ -63,6 +68,21 @@
       </el-form-item>
     </el-form>
     <el-button type="primary" @click="create">创建</el-button>
+  </el-dialog>
+  <el-dialog v-model="outerVisible1">
+    <el-form
+      label-width="100px"
+      :model="formLabelAlign"
+      style="max-width: 460px"
+    >
+      <el-form-item label="tag">
+        {{ activeSpuName }}
+      </el-form-item>
+      <el-form-item label="tag">
+        <el-input v-model="tag" />
+      </el-form-item>
+    </el-form>
+    <el-button type="primary" @click="createTag">确定</el-button>
   </el-dialog>
 </template>
 
@@ -107,6 +127,8 @@ const downloadStream = () => {
 };
 
 const spuName = ref('');
+const tag = ref('');
+const activeSpuName = ref('');
 const formLabelAlign = ref({
   id: '',
 
@@ -127,18 +149,23 @@ const formLabelAlign = ref({
   warehouse: { name: '', code: '' }
 });
 const outerVisible = ref(false);
+const outerVisible1 = ref(false);
 const tableData = ref([]);
 
 const search = () => {
-  fetch(`api/dbtest?spuName=${spuName.value}`)
+  fetch(`api/dbtest?spuName=${spuName.value}&page=1&pageSize=10`)
     .then(res => res.json())
     .then(res => {
-      tableData.value = res.data
+      tableData.value = res.data.data;
     });
 };
 
 const add = () => {
   outerVisible.value = true;
+};
+const addTag = (v: string) => {
+  activeSpuName.value = v;
+  outerVisible1.value = true;
 };
 const create = () => {
   const params = {
@@ -157,7 +184,22 @@ const create = () => {
     }
   })
     .then(res => res.json())
-    .then(res => {
-    });
+    .then(res => {});
+};
+
+const createTag = () => {
+  const params = {
+    spuName: activeSpuName.value,
+    tag: tag.value
+  };
+  fetch('api/dbtest/tag', {
+    method: 'post',
+    body: JSON.stringify(params),
+    headers: {
+      'content-type': 'application/json; charset=utf-8'
+    }
+  })
+    .then(res => res.json())
+    .then(res => {});
 };
 </script>

@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, Generated, PrimaryColumn } from 'typeorm'
-
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, Generated, PrimaryColumn, OneToMany } from 'typeorm'
+import {Tags} from './tag.entity'
 @Entity() // 实体装饰器
 export class Dbtest {
     @PrimaryGeneratedColumn()
@@ -43,4 +43,8 @@ export class Dbtest {
 
     // @Column({type: 'simple-json'})
     // warehouse: {name: string, code: string}
+
+    @OneToMany(() => Tags, (Tags) => Tags.spuName) // 
+    tags: Tags[]
+
 }

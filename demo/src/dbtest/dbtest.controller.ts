@@ -5,15 +5,19 @@ import { UpdateDbtestDto } from './dto/update-dbtest.dto';
 
 @Controller('dbtest')
 export class DbtestController {
-  constructor(private readonly dbtestService: DbtestService) {}
+  constructor(private readonly dbtestService: DbtestService) { }
 
+  @Post('tag')
+  createTag(@Body() params: { spuName: string, tag: string }) {
+    return this.dbtestService.createTag(params);
+  }
   @Post()
   create(@Body() createDbtestDto: CreateDbtestDto) {
     return this.dbtestService.create(createDbtestDto);
   }
 
   @Get()
-  findAll(@Query() query) {
+  findAll(@Query() query: { spuName: string | null, page: number, pageSize: number }) {
     return this.dbtestService.findAll(query);
   }
 
