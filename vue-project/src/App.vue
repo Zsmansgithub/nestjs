@@ -15,6 +15,55 @@
     </el-form-item>
     <el-button type="primary" @click="downloadStream">下载</el-button>
   </el-form>
+  <el-input v-model="spuName"></el-input>
+  <el-button type="primary" @click="search">查询</el-button>
+  <el-button type="primary" @click="add">添加</el-button>
+  <el-table :data="tableData" style="width: 100%">
+    <el-table-column prop="id" label="id" />
+    <el-table-column prop="spuName" label="品名" />
+    <el-table-column prop="color" label="颜色" />
+    <el-table-column prop="colorCode" label="色号" />
+    <el-table-column prop="fineCode" label="细码" />
+    <el-table-column prop="number" label="库存" />
+    <el-table-column prop="isActive" label="是否启用" />
+    <el-table-column prop="createTime" label="创建时间" />
+    <el-table-column prop="warehouse" label="仓库" />
+    <el-table-column prop="menchart" label="商家" />
+  </el-table>
+
+  <el-dialog v-model="outerVisible">
+    <el-form
+      label-width="100px"
+      :model="formLabelAlign"
+      style="max-width: 460px"
+    >
+      <el-form-item label="spuName">
+        <el-input v-model="formLabelAlign.spuName" />
+      </el-form-item>
+      <el-form-item label="color">
+        <el-input v-model="formLabelAlign.color" />
+      </el-form-item>
+      <el-form-item label="colorCode">
+        <el-input v-model="formLabelAlign.colorCode" />
+      </el-form-item>
+      <el-form-item label="fineCode">
+        <el-input v-model="formLabelAlign.fineCode" />
+      </el-form-item>
+      <el-form-item label="number">
+        <el-input v-model="formLabelAlign.number" />
+      </el-form-item>
+      <el-form-item label="isActive">
+        <el-input v-model="formLabelAlign.isActive" />
+      </el-form-item>
+      <el-form-item label="menchart">
+        <el-input v-model="formLabelAlign.menchart" />
+      </el-form-item>
+      <el-form-item label="warehouse">
+        <el-input v-model="formLabelAlign.warehouse" />
+      </el-form-item>
+    </el-form>
+    <el-button type="primary" @click="create">创建</el-button>
+  </el-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -54,6 +103,61 @@ const downloadStream = () => {
       a.href = url;
       a.download = 'zs.zip';
       a.click();
+    });
+};
+
+const spuName = ref('');
+const formLabelAlign = ref({
+  id: '',
+
+  spuName: '测试001',
+
+  color: '黑色',
+
+  colorCode: '#333',
+
+  fineCode: 'Y7654324',
+
+  number: 11,
+
+  isActive: 1,
+
+  menchart: [],
+
+  warehouse: { name: '', code: '' }
+});
+const outerVisible = ref(false);
+const tableData = ref([]);
+
+const search = () => {
+  fetch(`api/dbtest?spuName=${spuName.value}`)
+    .then(res => res.json())
+    .then(res => {
+      tableData.value = res.data
+    });
+};
+
+const add = () => {
+  outerVisible.value = true;
+};
+const create = () => {
+  const params = {
+    spuName: formLabelAlign.value.spuName,
+    color: formLabelAlign.value.color,
+    colorCode: formLabelAlign.value.colorCode,
+    fineCode: formLabelAlign.value.fineCode,
+    number: Number(formLabelAlign.value.number),
+    isActive: Number(formLabelAlign.value.isActive)
+  };
+  fetch('api/dbtest', {
+    method: 'post',
+    body: JSON.stringify(params),
+    headers: {
+      'content-type': 'application/json; charset=utf-8'
+    }
+  })
+    .then(res => res.json())
+    .then(res => {
     });
 };
 </script>

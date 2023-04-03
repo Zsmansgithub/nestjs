@@ -25,6 +25,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.2.1",
+    "@nestjs/typeorm": "^9.0.1",
     "@types/cors": "^2.8.13",
     "@types/express-session": "^1.17.6",
     "@types/multer": "^1.4.7",
@@ -37,10 +38,12 @@
     "cors": "^2.8.5",
     "express-session": "^1.17.3",
     "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.2.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "svg-captcha": "^1.4.0",
     "swagger-ui-express": "^4.6.2",
+    "typeorm": "^0.3.12",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

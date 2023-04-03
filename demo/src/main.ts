@@ -12,7 +12,6 @@ import { response } from './common/response'; //
 import { RoleGuard } from './guard/role.guard'; // 守卫全局引入
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
-
 // 全局拦截（中间件）
 function middlewareAll(req: Request, res: Response, next: NextFunction) {
   console.log(req.originalUrl);
@@ -25,7 +24,6 @@ function middlewareAll(req: Request, res: Response, next: NextFunction) {
     });
   }
 }
-
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -59,6 +57,6 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
-  await app.listen(9527);
+  await app.listen(8000);
 }
 bootstrap();

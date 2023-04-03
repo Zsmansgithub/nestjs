@@ -16,11 +16,12 @@ export class RoleGuard implements CanActivate {
     const role = req.query.role
     console.log('admin', admin)
     console.log('经过了守卫');
-    let res = false;
-    if (admin instanceof Array && role) {
-      console.log('admin111', admin)
-      res = (admin as Array<string>).includes(role.toString());
-    }
-    return res
+    // let res = false;
+    // if (admin instanceof Array && role) {
+    //   console.log('admin111', admin)
+    //   res = (admin as Array<string>).includes(role.toString());
+    // }
+    // return res
+    return true
   }
 }
