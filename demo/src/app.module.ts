@@ -13,6 +13,7 @@ import { CrawlerModule } from './crawler/crawler.module';
 import { GuardModule } from './guard/guard.module';
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { DbtestModule } from './dbtest/dbtest.module';
+import { PokemonModule } from './pokemon/pokemon.module';
 
 @Module({
   imports: [
@@ -32,7 +33,7 @@ import { DbtestModule } from './dbtest/dbtest.module';
     ApidemoModule,
     ListModule, // 模块需导出后（exports）才能在别处引用使用 默认只能在模块内部(controller)使用
     BasicModule, // 全局模块注册
-    ConfigModule.aaa({ path: 'aaa' }), UploadModule, LoginModule, CrawlerModule, GuardModule, DbtestModule, // 调用ConfigModule类静态方法 传入参数动态返回module
+    ConfigModule.aaa({ path: 'aaa' }), UploadModule, LoginModule, CrawlerModule, GuardModule, DbtestModule, PokemonModule, // 调用ConfigModule类静态方法 传入参数动态返回module
   ], // BasicModule 全局模块
   controllers: [AppController],
   // providers: [AppService],
